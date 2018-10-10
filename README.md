@@ -46,3 +46,39 @@ Process Control Block (PCB) is a kernel data structure
 run a program:
 - make a copy of a process
 - replace the child process with a new one
+
+
+
+## Multithreaded Programming
+-------------------------------------
+### Why
+
+If only one processor, make it look like things are running in parallel
+- easier & faster
+
+### Creation
+Creating a POSIX Thread
+    - every thread needs a separate stack
+    - first stack frame in every child thread corresponds to start_routine
+Multiple Arguments
+- Be careful how to pass argument to new thread when you call pthread_create()
+    - passing address of a local variable only works if we are certain the this storage doesn’t go out of scope until the thread is done with it
+    - passing address of a static or a global variable only works if we are certain that only one thread at a time is using the storage
+    - passing address of a dynamically allocated storage only works if we can free the storage when, and only when, the thread is finished with it
+
+- To wait for a child thread to die, use pthread_join()
+
+### Termination
+- Return Value
+- self-terminate
+    + return from its "first procedure"
+    + pthread_exit: only for this thread (only way for not affecting others)
+
+### Synchronization
+avoid Mutual Exclusion
+- Atomic operation
+    + pthread_mutex_lock()
+    + critical section
+    + pthread_mutex_unlock()
+- multiple locks may cause deadlock
+    + Prevention: Lock Hierarchies: must not try locking a mutex at level i if already holding a mutex at equal or higher level
