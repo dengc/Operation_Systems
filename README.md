@@ -58,8 +58,9 @@ If only one processor, make it look like things are running in parallel
 
 ### Creation
 Creating a POSIX Thread
-    - every thread needs a separate stack
-    - first stack frame in every child thread corresponds to start_routine
+- every thread needs a separate stack
+- first stack frame in every child thread corresponds to start_routine
+
 Multiple Arguments
 - Be careful how to pass argument to new thread when you call pthread_create()
     - passing address of a local variable only works if we are certain the this storage doesn’t go out of scope until the thread is done with it
@@ -100,3 +101,34 @@ avoid Mutual Exclusion
             - if producer is fast and consumer slow, producer may wait
     - looks like mutex
         - diff: one thread performs a P operation on a semaphore, another thread performs a V operation on the same semaphore
+- Barriers
+    - one thread reaches a barrier, wait until all threads reach, last thread broadcast, then all move forward
+
+### Safety
+- can be reentrant
+- To suspend your thread for a certain duration
+
+### Deviations
+Unix’s signal mechanism
+- Signals
+    - Ex:  <Cntrl+C>
+    - callback/ upcall
+    - A signal is pending if it’s generated but blocked, can be delivered if unblocked
+- handling signals
+    - asynchronously
+        - signal handler
+            - each signal in a process can have at most one handler
+            - sigset(), sigaction()
+            - handler() is not async-signal safe
+    - synchronously
+        - use sigwait()
+- masking signals
+    - sigset_t
+    - if a mask bit is 1, the corresponding signal is blocked
+- POSIX Cancellation Rules
+    - when pthread_cancel() gets called, the target thread is marked as having a pending cancel, not wait for the cancel to take effect
+    - when a thread acts on the cancel, walks through a stack of cleanup handlers
+
+
+## Context Switching
+-------------------------------------
