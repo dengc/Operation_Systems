@@ -132,3 +132,8 @@ Unix’s signal mechanism
 
 ## Context Switching
 -------------------------------------
+what are we switching -- Execution context, which is the current state of our thread
+
+Context of main(): CPU registers, global var, local var
+Context of sub(): global, local var, arguments
+Stack frame 从上到下：local var, ebp, eip, args
