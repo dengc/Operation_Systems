@@ -13,10 +13,10 @@ execution context
 examples: 
 - files: in disk 
 - programs: memory (up-side-down): 上low下high
-	- memory map - VM
-		- convert Virtual Address to Physical Address
-		- part hw, part os
-		- each program thinks has own full address space
+    - memory map - VM
+        - convert Virtual Address to Physical Address
+        - part hw, part os
+        - each program thinks has own full address space
 - threads: virtual processor
 
 
@@ -82,3 +82,21 @@ avoid Mutual Exclusion
     + pthread_mutex_unlock()
 - multiple locks may cause deadlock
     + Prevention: Lock Hierarchies: must not try locking a mutex at level i if already holding a mutex at equal or higher level
+- Guarded Commands
+    - evaluting the guard and executing the command sequence altogether is an atomic operation if the guard is true
+        - inside one critical section
+    - the guard is complicated: keeps changing its value, continuously
+        - need condition variables, which is a queue of threads
+    - steps:
+        1. pthread_cond_wait(cv, mutex)
+            - when mutex locked, wait
+            - atomically unlocks mutex and wait for the "event"
+        2. pthread_cond_broadcast: for all threads; pthread_cond_signal: for one thread
+            - for some Readers-Writers 
+- Semaphores
+    - usually 2 operations
+    - can be binary or counting
+        - counting: solve the producer-consumer problem
+            - if producer is fast and consumer slow, producer may wait
+    - looks like mutex
+        - diff: one thread performs a P operation on a semaphore, another thread performs a V operation on the same semaphore
