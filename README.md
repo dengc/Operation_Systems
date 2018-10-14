@@ -48,7 +48,6 @@ run a program:
 - replace the child process with a new one
 
 
-
 ## Multithreaded Programming
 -------------------------------------
 ### Why
@@ -136,4 +135,18 @@ what are we switching -- Execution context, which is the current state of our th
 
 Context of main(): CPU registers, global var, local var
 Context of sub(): global, local var, arguments
-Stack frame 从上到下：local var, ebp, eip, args
+Stack frame 从上到下：local var (from callee), ebp, eip, args (from caller)
+
+### Coroutine Linkage
+- Threads are independent, but they can be made aware of each other and be able to transfer control from one thread to another
+- Switch: To transfer control from one thread to another is equivalent to copying the thread control block of the target thread into the "Current Thread context"
+
+### System Calls
+A system call involves the transfer of control from user code to system/kernel code and back
+- there is no thread switching!
+- Most systems provide threads with two stacks
+    - executes in priviledged mode (kernel)
+    - it then changed back to a user thread eventually
+- Trap into the kernel with all interrupt disabled and processor mode set to privileged mode
+
+### Interrupts
