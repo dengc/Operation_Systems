@@ -188,3 +188,26 @@ use I/O processors (a.k.a. channels) to handle much of the I/O work
 
 ## Dynamic Storage Allocation
 -------------------------------------
+Goal: allow dynamic creation and destruction of data structures
+- use "memory allocator" to manage a large block of memory (i.e., a collection of contiguous memory addresses)
+- first-fit vs. best-fit allocation
+    - first-fit works better
+    - best-fit tends to create smallest left-over blocks
+    - Memory allocator must run fast
+
+coalescing: need to know that size of the blocks above and below the block being freed
+
+### Buddy System
+blocks get evenly divided into two blocks that are buddies with each other
+- can only merge with your buddy if your buddy is also free
+- internal fragmentation
+
+BUDDYk(x) =x+2 k if x mod 2 k+1=0 
+BUDDYk(x) =x-2 k if x mod 2 k+1=2 k 
+Ex: BUDDY2(1010100) =1010000
+
+### Slab Allocation
+- sets up a separate cache for each type of object to be managed
+- contiguous sets of pages called slabs, allocated to hold objects
+- Whenever a slab is allocated, a constructor is called to initialize all the objects it hold
+- As objects are being allocated, they are taken from the set of existing slabs in the cache
