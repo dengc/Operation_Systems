@@ -211,3 +211,35 @@ Ex: BUDDY2(1010100) =1010000
 - contiguous sets of pages called slabs, allocated to hold objects
 - Whenever a slab is allocated, a constructor is called to initialize all the objects it hold
 - As objects are being allocated, they are taken from the set of existing slabs in the cache
+
+## Linking & Loading
+-------------------------------------
+if everything can be accessed relative to the frame pointer, then you don’t need to know the actual address of an object, just use relative-addresses to access variables
+
+compiler figure out how many bytes each object is
+linker figures out where each object is
+
+Linker Functions:
+- relocation
+- symbol resolution
+
+o- file
+An object file describes what’s in the data, bss, and text segments in separate sections
+- global symbols
+- undefined symbols
+- instructions for relocation
+
+## Booting
+-------------------------------------
+to pull yourself up by your bootstraps
+- load a tiny OS into memory
+- known as the bootstrap loader
+    - it would handle: disk device, on-disk file system, device driver
+
+### Basic Input-Output System (BIOS)
+- code stored in read-only memory (ROM)
+- configuration data in non-volatile RAM
+- 3 primary functions
+    - power-on self test (POST)
+    - knows where to load the boot program
+    - load and transfer control to boot program provide drivers for all devices
